@@ -8,8 +8,10 @@ params = {
     'type': 'math',
     'json': 'true'
 }
+
 with open('API') as g:
     List = g.read().split('\n')
+
 res = requests.get(api_url, params=params)
 print(res.status_code)
 print(res.text)
