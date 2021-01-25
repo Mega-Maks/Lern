@@ -1,14 +1,15 @@
 import requests
 
 api_url = 'http://numbersapi.com/{}/math?json'
-number = input()
 
-with open('API') as g:
+with open('dataset_24476_3.txt') as g:
     List = g.read().split('\n')
 
-res = requests.get(api_url.format(number))
+print(List)
 
-if res.json()['found']:
-    print('Interesting')
-else:
-    print('Boring')
+for i in List:
+    res = requests.get(api_url.format(i))
+    if res.json()['found']:
+        print('Interesting')
+    else:
+        print('Boring')
