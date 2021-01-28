@@ -1,72 +1,66 @@
-n = int(input())
-Dict = {}
-def Input(input):
-    List = input.split()
-    if List.count(":"):
-        List.pop(List.index(':'))
-    return List
-for i in range(n):
-    List = Input(input())
-    if len(List) == 1:
-        if List[0] in Dict:
-            Dict[List[0]] += ['']
-        else:
-            Dict[List[0]] = ['']
-    else:
-        if List[0] in Dict:
-            if Dict[List[0]] == ['']:
-                Dict[List[0]] = List[1:]
+def Input(input_str):
+    '''
+    :param input: str формата '[намиенование класса]:[родитель(и) класса]'
+    :return: Лист с назваиями классов (input_list[0] == Ребёнок; input_list[1:] == Родитель(и))
+    '''
+    input_list = input_str.split()
+    if input_list.count(":"):
+        input_list.pop(input_list.index(':'))
+    return input_list
+
+
+def init(count_of_inputs):
+    '''
+    :param count_of_inputs: Количество вводов
+    :return: Cловарь с деревом классов вида(dict[Ребёнок] == Родитель)
+    '''
+    class_dict = {}
+    for i in range(count_of_inputs):
+        input_list = Input(input())
+        # Запись словаря:
+        if len(input_list) == 1:  # Только ребёнок
+            if input_list[0] in class_dict:
+                class_dict[input_list[0]] += ['']
             else:
-                Dict[List[0]] += List[1:]
-        else:
-            Dict[List[0]] = List[1:]
-Dict2 = Dict.copy()
-for i in Dict2:
-    for j in Dict[i]:
-        if j == '':
-            pass
-        elif j in Dict:
-            pass
-        else:
-            Dict[j] = ['']
-print(Dict)
-n = int(input())
-var = ''
-List = []
-def Check(Parent, Chaild):
-    if Parent in Dict[Chaild]:
-        return True
-    elif Dict[Chaild] == ['']:
-        return None
+                class_dict[input_list[0]] = ['']
+        else:  # Ребёнок и родитель(и)
+            if input_list[0] in class_dict:
+                if class_dict[input_list[0]] == ['']:
+                    class_dict[input_list[0]] = input_list[1:]
+                else:
+                    class_dict[input_list[0]] += input_list[1:]
+            else:
+                class_dict[input_list[0]] = input_list[1:]
+    return class_dict
+
+
+def Serch(parent, chaild, class_dict):
+    '''
+    Ищет в словаре(class_dict) родителя(parent) от ребёнка(chaild)
+
+    :param parent: Родитель
+    :param chaild: Ребёнок
+    :param class_dict: Словарь
+    :return: 'Yes'/'No'
+    '''
+    if chaild not in class_dict:
+        return 'No'
+    elif chaild == parent:
+        return 'Yes'
     else:
-        return False
-def Serch(Parent, Chaild):
-    if Chaild not in Dict:
-        return ''
-    elif Chaild == Parent:
-        return Chaild
-    else:
-        if Dict[Chaild] == '':
-            pass
-        elif Parent in Dict[Chaild]:
-            return Chaild
-        elif Check(Parent, Chaild) == False:
-            for i in Dict[Chaild]:
-                if Serch(Parent, i) == i:
-                    return Chaild
-                    break
-        return ''
-for i in range(n):
-    List.append(input())
-m = 0
-List2 = []
-for i in List:
-    for j in List[0:m]:
-        var = Serch(j, i)
-        if var != '':
-            if var not in List2:
-                List2 += [var]
-    m += 1
-for i in List2:
-    print(i)
-print(List)
+        if class_dict[chaild] == ['']:
+            return 'No'
+        elif parent in class_dict[chaild]:
+            return 'Yes'
+        else:
+            for parent in class_dict[chaild]:
+                return Serch(parent, chaild, class_dict)
+        return 'No'
+
+
+count_of_inputs = int(input())
+class_dict = init(count_of_inputs)
+
+for i in range(int(input())):
+    input_list = input().split()
+    print(Serch(input_list[0], input_list[1], class_dict))
