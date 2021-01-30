@@ -1,11 +1,20 @@
-s = input()
-t = input()
-Index = 0
-Count = 0
-while Index != len(s):
-    if s.count(t, Index) > 0:
-        Count += 1
-        Index += s.index(t, Index) - Index + 1
-    else:
-        break
-print(Count)
+def Count(s: str, t: str):
+    '''
+
+    :param s: Строка в которой мы ищем количество вхождений строки t
+    :param t: Строка t
+    :return:
+    '''
+    index = 0
+    count = 0
+
+    while index != len(s):
+        if s.count(t, index) > 0:
+            count += 1
+            index += s.index(t, index) - index + 1
+        else:
+            break
+    return count
+
+
+print(Count(input(), input()))
