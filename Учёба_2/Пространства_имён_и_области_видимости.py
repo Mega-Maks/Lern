@@ -1,36 +1,76 @@
-n = int(input())
-
-Dict2 = {'global': []}
-Dict3 = {'global': []}
+namespace_dict = {'global': []}
+arguments_dict = {'global': []}
 
 
-def Whrite_dict(namespase, arg):
-    if arg != 'global':
-        Dict2[namespase] = [arg] + Dict2[arg]
+def create_or_namespace(namespace, arg, some_dict):
+    '''
+    Добовляет в namespace_dict[namespace] arg
+     :param namespace: Имя пространства
+     :param arg: Имя переменной
+     :param some_dict: Словарь вида arguments_dict[namespace] == [namespace, namespace...]
+     :return: namespace_dict
+    '''
+    if namespace in some_dict:
+        some_dict[namespace] += [arg]
     else:
-        Dict2[namespase] = ['global']
+        some_dict[namespace] = [arg]
+    return some_dict
 
 
-def Serch(arg, namespase):
-    while namespase != 'global':
-        if arg in Dict3[namespase]:
-            print(namespase)
+def search_namespace(arg, namespace, arguments_dict, namespace_dict):
+    '''
+    Поиск по словарям
+     :param arg: Имя переменной
+     :param namespace: Имя пространства
+     :param arguments_dict: Словарь вида arguments_dict[namespace] == [arg, arg...]
+     :param namespace_dict: Словарь вида arguments_dict[namespace] == [namespace, namespace...]
+    '''
+    while namespace != 'global':
+        if arg in arguments_dict[namespace]:
+            print(namespace)
             break
         else:
-            namespase = Dict2[namespase][0]
+            namespace = namespace_dict[namespace][0]
     else:
-        if arg in Dict3['global']:
+        if arg in arguments_dict['global']:
             print('global')
         else:
             print(None)
 
 
-for i in range(n):
-    cmd, namespase, arg = input().split()
-    if cmd == 'create':
-        Whrite_dict(namespase, arg)
-        Dict3[namespase] = []
-    elif cmd == 'add':
-        Dict3[namespase] += [arg]
+def add_namespace(namespace, arg, arguments_dict):
+    '''
+    Добовляет в arguments_dict[namespace] arg
+     :param namespace: Имя пространства
+     :param arg: Имя переменной
+     :param arguments_dict: Словарь вида arguments_dict[namespace] == [arg, arg...]
+    :return: arguments_dict
+    '''
+    if namespace in arguments_dict:
+        arguments_dict[namespace] += [arg]
     else:
-        Serch(arg, namespase)
+        arguments_dict[namespace] = [arg]
+    return arguments_dict
+
+
+for i in range(int(input())):
+    cmd, namespace, arg = input().split()
+    if cmd == 'create':
+        namespace_dict = create_or_namespace(namespace, arg, namespace_dict)
+    elif cmd == 'add':
+        arguments_dict = create_or_namespace(namespace, arg, arguments_dict)
+    elif cmd == 'get':
+        search_namespace(arg, namespace, arguments_dict, namespace_dict)
+
+# 9
+# add global a
+# create foo global
+# add foo b
+# get foo a
+# get foo c
+# create bar foo
+# add bar a
+# get bar a
+# get bar b
+
+
