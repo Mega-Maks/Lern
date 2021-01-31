@@ -1,22 +1,33 @@
 from xml.etree import ElementTree
 
-count_dict = {'red': 0, "green": 0, 'blue': 0}
 
-with open('XML.xml', 'w') as xml:
-    xml.write(input())
-tree = ElementTree.parse('XML.xml')
-root = tree.getroot()
+def init(xml_input, file_name):
+    with open(file_name, 'w') as xml:
+        xml.write(xml_input)
+    tree = ElementTree.parse(file_name)
+    root = tree.getroot()
+    return root
 
-def counter(var, root):
+
+def counter(var, root, some_dict):
     if root.findall('cube') == []:
-        count_dict[root.attrib['color']] += var
+        some_dict[root.attrib['color']] += var
     else:
-        count_dict[root.attrib['color']] += var
-        for i in root.findall('cube'):
-            list = root.findall('cube')
-            counter(var + 1, i)
+        some_dict[root.attrib['color']] += var
+        for elem in root.findall('cube'):
+            counter(var + 1, elem, some_dict)
+    return some_dict
 
-counter(1, root)
 
-for key in count_dict:
-    print(count_dict[key], end=' ')
+def dict_printer(some_dict):
+    for key in some_dict:
+        print(some_dict[key], end=' ')
+
+
+def general_function(xml_input):
+    root = init(xml_input, 'XML.xml')
+    count_dict = counter(1, root, {'red': 0, "green": 0, 'blue': 0})
+    dict_printer(count_dict)
+
+
+general_function(input())

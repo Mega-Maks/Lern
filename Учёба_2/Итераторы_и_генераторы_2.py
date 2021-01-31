@@ -1,4 +1,6 @@
 import itertools
+
+
 def primes ():
     number = 2
     prime = True
@@ -10,4 +12,6 @@ def primes ():
         if k == 2:
             yield number
         number += 1
+
+
 print(list(itertools.takewhile(lambda x : x <= 31, primes())))

@@ -3,11 +3,13 @@ n = int(input())
 Dict2 = {'global': []}
 Dict3 = {'global': []}
 
+
 def Whrite_dict(namespase, arg):
     if arg != 'global':
         Dict2[namespase] = [arg] + Dict2[arg]
     else:
         Dict2[namespase] = ['global']
+
 
 def Serch(arg, namespase):
     while namespase != 'global':
@@ -21,6 +23,7 @@ def Serch(arg, namespase):
             print('global')
         else:
             print(None)
+
 
 for i in range(n):
     cmd, namespase, arg = input().split()
