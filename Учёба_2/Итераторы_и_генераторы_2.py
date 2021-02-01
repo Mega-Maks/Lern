@@ -1,7 +1,7 @@
 import itertools
 
 
-def primes ():
+def primes():
     number = 2
     prime = True
     while prime:
@@ -14,4 +14,4 @@ def primes ():
         number += 1
 
 
-print(list(itertools.takewhile(lambda x : x <= 31, primes())))
+print(list(itertools.takewhile(lambda x: x <= 31, primes())))
