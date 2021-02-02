@@ -2,6 +2,12 @@ n, k = map(int, input().split())
 
 
 def C(n, k):
+    '''
+
+    :param n:
+    :param k:
+    :return:
+    '''
     if k == 0:
         return 1
     elif k > n:

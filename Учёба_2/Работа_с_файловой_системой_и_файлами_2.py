@@ -1,12 +1,15 @@
 import os.path
 os.chdir('main')
-Set = set()
-with open('C:\\Users\\Ryzhk\\PycharmProjects\\Учёба\\Учёба_2\\text_2', 'w') as g:
+file_ways_set = set()
+with open('text_2', 'w') as file:
     for a, b, c in os.walk('.'):
+        print(a)
+        print(b)
+        print(c)
         for i in c:
             if i[-1] == 'y':
-                Set.add('main' + a[1:] + '\n')
-    print(Set)
-    print(sorted(Set))
-    for i in sorted(Set):
-        g.write(i)
+                file_ways_set.add('main' + a[1:] + '\n')
+    print(file_ways_set)
+    print(sorted(file_ways_set))
+    for way in sorted(file_ways_set):
+        file.write(way)
