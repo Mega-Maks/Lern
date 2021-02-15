@@ -1,24 +1,26 @@
 import requests as r
 import re
-start_link = input()
-end_link = input()
 
-Start = r.get(start_link)
-Start = Start.text
-Start = re.findall(r'".+"', Start)[0]
-link_from_first = Start[1:-1]
 
-Second = r.get(link_from_first)
-Second = Second.text
-Second = re.findall(r'".+"', Second)[0]
-link_from_second = Second[1:-1]
+def getter(link_for_get):
+    get_link = r.get(link_for_get)
+    get_link = get_link.text
+    get_link = re.findall(r'<a href=[\"\'](.+?)[\"\'](.*?)>', get_link)
+    return get_link
 
-Second = r.get(link_from_second)
-Second = Second.text
-Second = re.findall(r'".+"', Second)[0]
-link_from_third = Second[1:-1]
 
-if link_from_second == end_link:
-    print('Yes')
-else:
-    print('No')
+def checker(start_link, end_link):
+    link_from_first = getter(start_link)
+    print(link_from_first)
+    for link in link_from_first:
+        print(link)
+        link_from_second = getter(link[0])
+        for link_2 in link_from_second:
+            print(link_2)
+            if link_2[0] == end_link:
+                print('Yes')
+            else:
+                print('No')
+
+
+checker(input(), input())
