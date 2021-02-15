@@ -1,25 +1,21 @@
 import re
+import requests as r
 
-link ='''
-<a href="aaa.123.ru"> двойные кавычки </a> 1
-<a href='aaa.456.ru'> одинарные кавычки </a> 2
-<a href="bbb_bbb.jp"> символ '_' </a> 3
-<a href="ccc-ccc.info"> символ '-' </a> 4
-<a  href  =  "ddd.dddeee.eee.org"  > лишние пробелы </a> 5
-<a target="blank" href="eee.eee.com" id="xyz" > доп.атрибуты </a> 6
-<a href="https://fff.fff.ru"> протоколы http, https, ftp и др. </a> 7
-<a href="http://ggg_gg.ru/info/res/index.html"> /ресурсы/ </a> 8
-<a href="http://hhh.hhh.ru:1234"> :порт </a> 9
-<a href="http://iii.iii.ru?par=abc+efg_"> ?параметр= </a> 10
-<!--    Не нужно:    -->
-<a href="../skip_relative_links.html"> ../относительная ссылка </a>
-<link rel="image" href="link.org/files/pict.png">
-'''
 
-List = re.findall(r'(<a(.+)href( *)=( *)((\')|(\")|( ))([^\"\s]+)((\')|(\")|( ))( *)>)', link)
-#r'(<a(.*)href( *)=((\")|(\'))(.+)((\"){1}?|(\'){1}?)( *)>)+?'
-#<a  href  =  "ddd.dddeee.eee.org"  > лишние пробелы </a> 5
+html_link = input()
+html_file = r.get(html_link)
+links = html_file.text
 
-m = 1
-for i in List:
-    print(i)
+find_list = re.findall(r'<a(.*?)href(.*?)=(.*?)[\"\']((http://)|(https://)|(ftp://)|[^.])(.*?)[?:/\"\'](.*?)', links)
+
+answer_set = set()
+
+for links_tuple in find_list:
+    if links_tuple[-2] == ' ..':
+        continue
+    elif links_tuple[3][-1] != '/':
+        answer_set.add(links_tuple[3] + links_tuple[7])
+    else:
+        answer_set.add(links_tuple[7])
+for answer in answer_set:
+    print(answer)
