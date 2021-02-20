@@ -42,6 +42,7 @@ def create_class_dict(list_of_dicts: list):
             dict_writer(child, elem['name'], some_dict)
     return some_dict
 
+
 def add_class_with_empty_childs(list_with_dicts: list, some_dict):
     '''
     Добовляет в словарь классы не имеющие детей
@@ -187,4 +188,5 @@ def general_function():
     answer_list = count_printer(dict_with_classes)
 
 
-general_function()
+if __name__ == "__main__":
+    general_function()

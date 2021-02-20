@@ -3,13 +3,13 @@ arguments_dict = {'global': []}
 
 
 def create_or_namespace(namespace, arg, some_dict):
-    '''
+    """
     Добовляет в namespace_dict[namespace] arg
      :param namespace: Имя пространства
      :param arg: Имя переменной
      :param some_dict: Словарь вида arguments_dict[namespace] == [namespace, namespace...]
      :return: namespace_dict
-    '''
+    """
     if namespace in some_dict:
         some_dict[namespace] += [arg]
     else:
@@ -18,13 +18,13 @@ def create_or_namespace(namespace, arg, some_dict):
 
 
 def search_namespace(arg, namespace, arguments_dict, namespace_dict):
-    '''
+    """
     Поиск по словарям
      :param arg: Имя переменной
      :param namespace: Имя пространства
      :param arguments_dict: Словарь вида arguments_dict[namespace] == [arg, arg...]
      :param namespace_dict: Словарь вида arguments_dict[namespace] == [namespace, namespace...]
-    '''
+    """
     while namespace != 'global':
         if arg in arguments_dict[namespace]:
             print(namespace)
@@ -39,13 +39,13 @@ def search_namespace(arg, namespace, arguments_dict, namespace_dict):
 
 
 def add_namespace(namespace, arg, arguments_dict):
-    '''
+    """
     Добовляет в arguments_dict[namespace] arg
      :param namespace: Имя пространства
      :param arg: Имя переменной
      :param arguments_dict: Словарь вида arguments_dict[namespace] == [arg, arg...]
     :return: arguments_dict
-    '''
+    """
     if namespace in arguments_dict:
         arguments_dict[namespace] += [arg]
     else:
