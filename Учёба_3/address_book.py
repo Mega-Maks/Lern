@@ -105,3 +105,4 @@ with open('contacts_file.csv', 'w', encoding='utf-8') as w_file:
         # else:
             # dict_for_csv['Mobile Phone'] = ''
             # file_writer.writerow([dict_for_csv[x] for x in dict_for_csv])
+
