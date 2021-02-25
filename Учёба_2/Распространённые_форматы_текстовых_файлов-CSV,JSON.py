@@ -2,12 +2,12 @@ import csv
 
 
 def dict_writer(key, some_dict):
-    '''
+    """
     Добовляет в some_dict[key] 1
      :param key: Ключ
      :param some_dict: Словарь
      :return: Словарь
-    '''
+    """
     if key in some_dict:
         some_dict[key] += 1
     else:
@@ -16,9 +16,9 @@ def dict_writer(key, some_dict):
 
 
 def count_of_primes():
-    '''
+    """
     :return: Словарь вида some_dict[prime] == count_of_prime
-    '''
+    """
     with open('Crimes.csv') as file:
         reader = csv.reader(file)
         some_dict = dict()
@@ -29,10 +29,10 @@ def count_of_primes():
 
 
 def maximum_in_dict(some_dict):
-    '''
+    """
     :param some_dict: Словарь с преступлениями
     :return: Вид преступления которое совершили больше всего раз в 2015
-    '''
+    """
     maximum = 0
     primary_type = None
     for i in some_dict:
