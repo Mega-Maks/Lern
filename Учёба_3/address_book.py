@@ -3,28 +3,8 @@ import csv
 import re
 import input_for_contacts as inp
 
-# 7770392
-# view-source:https://oauth.vk.com/blank.html
-# #access_token=a94dd2e3e0f8cd200bde00db6e49f7435faf2ddac98c464e84fac476023c4438927d06d5fc2f9c52397a4
-# &expires_in=86400
-# &user_id=181002310
-# серверный ключ доступа = d708f3bfd708f3bfd708f3bfe1d77e62a7dd708d708f3bfb73c21bf739970498293c9f5
 
-# https://api.vk.com/method/
-# friends.get?
-# v=5.52&
-# user_id=181002310&
-# fields=has_mobile,contacts&
-# access_token=d708f3bfd708f3bfd708f3bfe1d77e62a7dd708d708f3bfb73c21bf739970498293c9f5
-
-# https://api.vk.com/method/
-# users.get?
-# v=5.52&
-# user_ids=mihapil&
-# access_token=d708f3bfd708f3bfd708f3bfe1d77e62a7dd708d708f3bfb73c21bf739970498293c9f5
-
-
-def check_string(string):
+def phone_checker(string):
     """
     проверяем является ли строка номером телефона
     """
@@ -56,7 +36,6 @@ def contacts_dict_creator(input_dict, people_dict=None):
      :param input_dict: Словарь со значениями
      :return: Словарь cо значениями подходящими для составления CSV файла
     """
-    print(input_dict)
     if people_dict is None:
         people_dict = {}
     contacts_dict = {
@@ -66,20 +45,24 @@ def contacts_dict_creator(input_dict, people_dict=None):
         'Last Name': checker(people_dict, 'last_name')
         if input_dict['sp_dict']['inf_dict']['last_name'] else '',
 
-        'Mobile Phone': checker(people_dict, 'mobile_phone')
-        if input_dict['sp_dict']['inf_dict']['mobile_phone'] else '',
+        'Mobile Phone': people_dict['mobile_phone']
+        if input_dict['sp_dict']['inf_dict']['mobile_phone'] and
+        phone_checker(checker(people_dict, 'mobile_phone')) else '',
 
-        'Personal Web Page': 'https://vk.com/{}'.format(people_dict['id'])
-        if input_dict['sp_dict']['inf_dict']['id'] else '',
+        'Personal Web Page': 'https://vk.com/id{}'.format(people_dict['id'])
+        if input_dict['sp_dict']['inf_dict']['id'] and
+        checker(people_dict, 'id') != '' else '',
 
         'Birthday': checker(people_dict, 'bdate')
         if input_dict['sp_dict']['inf_dict']['bdate'] else '',
 
-        'Home City': checker(people_dict[checker(people_dict, 'city')], 'title')
-        if input_dict['sp_dict']['inf_dict']['city'] else '',
+        'Home City': checker(people_dict['city'], 'title')
+        if input_dict['sp_dict']['inf_dict']['city'] and
+        checker(people_dict, 'city') != '' else '',
 
-        'Home Country/Region': checker(people_dict[checker(people_dict, 'country')], 'title')
-        if input_dict['sp_dict']['inf_dict']['country'] else '',
+        'Home Country/Region': checker(people_dict['country'], 'title')
+        if input_dict['sp_dict']['inf_dict']['country'] and
+        checker(people_dict, 'country') != '' else '',
 
         'Notes': checker(people_dict, 'status')
         if input_dict['sp_dict']['inf_dict']['status'] else ''
@@ -109,42 +92,49 @@ def id_getter(id_or_nn):
 
 
 def peoples_getter(user_id):
+    """
+    Запрашивет по id пользователя его данные
+    :param user_id: id пользователя
+    :return: словарь с данными о ользователях
+    """
     method = "friends.get?"
     version = "v=5.52&"
     user_id = "user_id={}&".format(user_id)
-    fields = "fields=bdate,city,country,status&"
+    fields = "fields=bdate,city,country,status,contacts&"
     access_token = 'access_token=d708f3bfd708f3bfd708f3bfe1d77e62a7dd708d708f3bfb73c21bf739970498293c9f5'
     response_dict = r.get('https://api.vk.com/method/' + method + version + user_id + fields + access_token)
-    response_dict = response_dict.text
-    print(response_dict)
+    response_dict = response_dict.json()
+    if 'error' in response_dict:
+        raise KeyError('https://api.vk.com/method/' + method + version + user_id + fields + access_token)
     return response_dict
 
 
 def csv_writer(input_dict, response_dict):
     """
     Записывает в csv файл данные из словаря
-    :return:
+    :param input_dict: словарь со значениями для ввода
+    :param response_dict: словарь с данными о людях
     """
-
+    print(response_dict)
     with open('contacts_file.csv', 'w', encoding='utf-8') as w_file:
 
         fields = list(contacts_dict_creator(input_dict))
         file_writer = csv.writer(w_file)
         file_writer.writerow(fields)
         only_with_phones = input_dict['sp_dict']['inf_dict']['only_with_phones']
-        print(response_dict)
 
         for people_dict in response_dict['response']['items']:
             if only_with_phones:
                 dict_for_csv = contacts_dict_creator(input_dict, people_dict)
-                print(dict_for_csv)
+                if dict_for_csv['Mobile Phone'] != '':
+                    file_writer.writerow([dict_for_csv[x] for x in dict_for_csv])
             else:
                 dict_for_csv = contacts_dict_creator(input_dict, people_dict)
-                print(dict_for_csv)
+                file_writer.writerow([dict_for_csv[x] for x in dict_for_csv])
 
 
 if __name__ == '__main__':
     input_dict = inp.inputer()
-    user_id = id_getter(input_dict['id or NN'])
-    response_dict = peoples_getter(user_id)
+    user_dict = id_getter(input_dict['id or NN'])
+    response_dict = peoples_getter(user_dict['response'][0]['id'])
     csv_writer(input_dict, response_dict)
