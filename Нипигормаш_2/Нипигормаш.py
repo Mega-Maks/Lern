@@ -1,4 +1,3 @@
-import shutil
 import openpyxl
 import os
 import docx
@@ -8,6 +7,15 @@ ws = wb.active
 document_number = int(input('введите номер документа '))
 act_val = int(input('введите номер акта '))
 doc = docx.Document('C:\\Users\\Ryzhk\\PycharmProjects\\Учёба\\Нипигормаш_2\\Шаблон_dox.docx')
+
+
+def clear():
+    os.chdir('C:\\Users\\Ryzhk\\Desktop\\Новая папка (2)')
+    try:
+        for i in os.listdir():
+            os.remove(i)
+    except PermissionError:
+        print(f"Файл {i} открыт, закрой его")
 
 
 class Docx:
@@ -33,21 +41,21 @@ class Docx:
             10: '10000 кг (Десять)'
         }
         self.money_dict = {
-            1300: '1300,0 (Одна тысяча триста) руб 00коп',
-            2600: '2600,0 (Две тысячи шестьсот) руб 00коп',
-            3900: '3900,0 (Три тысячи девятьсот) руб 00коп',
-            5200: '5200,0 (Пять тысяч двести) руб 00коп',
-            6500: '6500,0 (Шесть тысяч Пятьсот) руб 00коп',
-            7800: '7800,0 (Семь тысяч восемьсот) руб 00коп',
-            9100: '9100,0 (Девять тысяч сто) руб 00коп',
-            10400: '10400,0 (Десять тысяч четыреста) руб 00коп',
-            11700: '11700,0 (Одинадцать тысяч семьсот) руб 00коп',
-            13000: '13000,0 (Тринадцать тысяч) руб 00коп',
-            14300: '14300,0 (Четырнадцать тысяч Триста) руб 00коп',
-            15600: '15600,0 (Пятнадцать тысяч Шестьсот) руб 00коп',
-            16900: '16900,0 (Шестнадцать тысяч девятьсот) руб 00коп',
-            18200: '18200,0 (Восемндцать тысяч двести) руб 00коп',
-            19000: '19500,0 (Девятнадцать тысяч пятьсот) руб 00коп'
+            1500: '1500,0 (Одна тысяча пятьсот) руб 00коп',
+            3000: '3000,0 (Три тысячи ) руб 00коп',
+            4500: '4500,0 (Четыре тысячи пятьсот) руб 00коп',
+            6000: '6000,0 (Шесть тысяч) руб 00коп',
+            7500: '7500,0 (Семь тысяч пятьсот) руб 00коп',
+            9000: '9000,0 (Девять тысяч ) руб 00коп',
+            10500: '10500,0 (Девять тысяч пятьсот) руб 00коп',
+            12000: '12000,0 (Десять тысяч ) руб 00коп',
+            13500: '13500,0 (Тринадцать тысяч пятьсот) руб 00коп',
+            15000: '15000,0 (Пятнадцать тысяч) руб 00коп',
+            16500: '16500,0 (Шестнадцать тысяч пятьсот) руб 00коп',
+            18000: '18000,0 (Восемнадцать тысяч ) руб 00коп',
+            19500: '19500,0 (Девятнадцать тысяч пятьсот) руб 00коп',
+            21000: '21000,0 (Двадцать одна тысяча) руб 00коп',
+            22500: '22500,0 (Двадцать две тысячи пятьсот) руб 00коп'
         }
 
     def docx_writer(self):
@@ -87,18 +95,35 @@ class Exel:
         self.act_val = act_val
         self.document_number = document_number
         self.month_dict = {
-            1: 'Января 2021 г.',
-            2: 'Февраля 2021 г.',
-            3: 'Марта 2021 г.',
-            4: 'Апреля 2021 г.',
-            5: 'Мая 2021 г.',
-            6: 'Июня 2021 г.',
-            7: 'Июля 2021 г.',
-            8: 'Августа 2021 г.',
-            9: 'Сентября 2021 г.',
-            10: 'Октября 2021 г.',
-            11: 'Ноября 2021 г.',
-            12: 'Декабря 2021 г.',
+            1: 'Января 2022 г.',
+            2: 'Февраля 2022 г.',
+            3: 'Марта 2022 г.',
+            4: 'Апреля 2022 г.',
+            5: 'Мая 2022 г.',
+            6: 'Июня 2022 г.',
+            7: 'Июля 2022 г.',
+            8: 'Августа 2022 г.',
+            9: 'Сентября 2022 г.',
+            10: 'Октября 2022 г.',
+            11: 'Ноября 2022 г.',
+            12: 'Декабря 2022 г.',
+        }
+        self.B_18_dict = {
+            1500: 'Одна тысяча пятьсот рублей 00коп',
+            3000: 'Три тысячи рублей 00коп',
+            4500: 'Четыре тысячи пятьсот рублей 00коп',
+            6000: 'Шесть тысяч рублей 00коп',
+            7500: 'Семь тысяч пятьсот рублей 00коп',
+            9000: 'Девять тысяч рублей 00коп',
+            10500: 'Девять тысяч пятьсот рублей 00коп',
+            12000: 'Десять тысяч рублей 00коп',
+            13500: 'Тринадцать тысяч пятьсот рублей 00коп',
+            15000: 'Пятнадцать тысяч рублей 00коп',
+            16500: 'Шестнадцать тысяч пятьсот рублей 00коп',
+            18000: 'Восемнадцать тысяч рублей 00коп',
+            19500: 'Девятнадцать тысяч пятьсот рублей 00коп',
+            21000: 'Двадцать одна тысяча рублей 00коп',
+            22500: 'Двадцать две тысячи пятьсот рублей 00коп'
         }
 
     def exel_writer(self):
@@ -110,30 +135,37 @@ class Exel:
             money += int(day_list[3])
         for street in list_with_streets:
             street_string += street
-        ws['B3'] = "Акт № " + str(self.act_val) + " от " + self.date[0:2] + " " + \
-                   self.month_dict[int(self.date[3:5])]
+        ws['B3'] = "Акт № " + str(self.act_val) + " от " + self.date[3:5] + " " + \
+                   self.month_dict[int(self.date[0:2])]
         ws['D12'] = self.date + 'г. Услуги манипулятора (МАРКА А/М MAN, Х 012 ХВ,' +\
                                 'Шестернин Александр Олегович) по маршруту: \n' + street_string
-        ws['U12'] = money / 1300
+        ws['U12'] = str(int(money / 1500))
+        ws['Z12'] = str(1500)
+        ws['AD12'] = str(money) + ',00'
+        ws['B17'] = f"Всего оказано услуг 1 на сумму {money},00"
+        ws['B18'] = self.B_18_dict[money]
         os.chdir('C:\\Users\\Ryzhk\\Desktop\\Новая папка (2)')
         wb.save(str(self.document_number) + ' ' + self.date + ' Акт №' + str(self.act_val) + '.xlsx')
 
 
-with open('input_file.txt') as input_file:
-    input_file = input_file.read()
+if __name__ == "__main__":
+    clear()
+    os.chdir('C:\\Users\\Ryzhk\\PycharmProjects\\Учёба\\Нипигормаш_2')
+    with open('input_file.txt') as input_file:
+        input_file = input_file.read()
 
-input_file = [[i.split('\t') for i in day.split('\n')] for day in input_file.split('\n\n')]
-for i in input_file:
-    print(i)
-for day_list in input_file:
-    doc_count = len(day_list) + 1
-    ex_val = Exel(day_list, act_val, document_number)
-    ex_val.exel_writer()
-    date = ex_val.date
-    act_val += 1
-    document_number += 1
-    for way_list in day_list:
-        doc = docx.Document('C:\\Users\\Ryzhk\\PycharmProjects\\Учёба\\Нипигормаш_2\\Шаблон_dox.docx')
-        docx_file = Docx(way_list, date, document_number, doc.tables)
-        docx_file.docx_writer()
+    input_file = [[i.split('\t') for i in day.split('\n')] for day in input_file.split('\n\n')]
+    for i in input_file:
+        print(i)
+    for day_list in input_file:
+        doc_count = len(day_list) + 1
+        ex_val = Exel(day_list, act_val, document_number)
+        ex_val.exel_writer()
+        date = ex_val.date
+        act_val += 1
         document_number += 1
+        for way_list in day_list:
+            doc = docx.Document('C:\\Users\\Ryzhk\\PycharmProjects\\Учёба\\Нипигормаш_2\\Шаблон_dox.docx')
+            docx_file = Docx(way_list, date, document_number, doc.tables)
+            docx_file.docx_writer()
+            document_number += 1
